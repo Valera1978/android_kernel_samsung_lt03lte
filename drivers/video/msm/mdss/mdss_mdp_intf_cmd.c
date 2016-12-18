@@ -258,7 +258,7 @@ static inline void mdss_mdp_cmd_clk_on(struct mdss_mdp_cmd_ctx *ctx)
 
 	if (irq_en)
 		mdss_mdp_irq_enable(MDSS_MDP_IRQ_PING_PONG_RD_PTR, ctx->pp_num);
-		
+
 	mutex_unlock(&ctx->clk_mtx);
 }
 
@@ -366,7 +366,7 @@ static void mdss_mdp_cmd_readptr_done(void *arg)
 	ctl->vsync_cnt++;
 	MDSS_XLOG(0xFFFF, ctl->num, ctx->koff_cnt, ctx->clk_enabled,
 				ctx->rdptr_enabled, duration);
- 
+
 	if (duration <= 8000 || duration >= 22000)
 		pr_err("[DEBUG]%s:time : %lld, duration : %lld\n",
 				__func__, vsync[index + add_value], duration);
@@ -425,7 +425,7 @@ static void mdss_mdp_cmd_readptr_done(void *arg)
 						pr_info("now restoring TE/ rdptr_enabled++\n");
 						if (ctx->rdptr_enabled == 0)
 							ctx->rdptr_enabled++;
-					}						
+					}
 #endif
 		/* keep clk on during kickoff */
 		if (ctx->rdptr_enabled == 0 && atomic_read(&ctx->koff_cnt))
@@ -734,7 +734,7 @@ static int mdss_mdp_cmd_wait4pingpong(struct mdss_mdp_ctl *ctl, void *arg)
 			ctx->rdptr_enabled, ctl->roi_bkup.w,
 			ctl->roi_bkup.h);
 
-	pr_debug("%s: intf_num=%d ctx=%p koff_cnt=%d\n", __func__,
+	pr_debug("%s: intf_num=%d ctx=%pK koff_cnt=%d\n", __func__,
 			ctl->intf_num, ctx, atomic_read(&ctx->koff_cnt));
 
 	rc = wait_event_timeout(ctx->pp_waitq,
@@ -985,7 +985,7 @@ int mdss_mdp_cmd_stop(struct mdss_mdp_ctl *ctl)
 					(MDSS_MDP_IRQ_PING_PONG_RD_PTR,
 							ctx->pp_num);
 				ctx->rdptr_enabled = 0;
-				
+
 			}
 		}
 	}
@@ -1092,7 +1092,7 @@ int mdss_mdp_cmd_start(struct mdss_mdp_ctl *ctl)
 	ctx->recovery.fxn = mdss_mdp_cmd_underflow_recovery;
 	ctx->recovery.data = ctx;
 
-	pr_debug("%s: ctx=%p num=%d mixer=%d\n", __func__,
+	pr_debug("%s: ctx=%pK num=%d mixer=%d\n", __func__,
 				ctx, ctx->pp_num, mixer->num);
 	MDSS_XLOG(ctl->num, ctx->koff_cnt, ctx->clk_enabled,
 					ctx->rdptr_enabled);
@@ -1123,4 +1123,3 @@ int mdss_mdp_cmd_start(struct mdss_mdp_ctl *ctl)
 
 	return 0;
 }
-

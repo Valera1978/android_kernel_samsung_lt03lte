@@ -1318,7 +1318,7 @@ int mdss_mdp_overlay_kickoff(struct msm_fb_data_type *mfd,
 	int sd_in_pipe = 0;
 	bool need_cleanup = false;
 	LIST_HEAD(destroy_pipes);
-	
+
 #if defined(CONFIG_FB_MSM_MIPI_SAMSUNG_OCTA_CMD_WQHD_PT_PANEL)
 		int te_ret = 0;
 #endif
@@ -3635,4 +3635,3 @@ void mdss_mdp_underrun_dump_info(struct msm_fb_data_type *mfd)
 	mdss_mdp_underrun_clk_info();
 	pr_info(" ============ dump_end =========== \n");
 }
-
