@@ -62,8 +62,8 @@ struct brt_value{
 };
 
 struct brt_value brt_table_ktd[] = {
-	{ MIN_BRIGHTNESS_VALUE, 32 }, /*Min pulse 32 */ 
-	{ 22, 31 }, 
+	{ MIN_BRIGHTNESS_VALUE, 32 }, /*Min pulse 32 */
+	{ 22, 31 },
 	{ 34, 30 },
 	{ 45, 29},
 	{ 55, 28 },
@@ -494,7 +494,7 @@ static int mdss_dsi_panel_partial_update(struct mdss_panel_data *pdata)
 				panel_data);
 	mipi  = &pdata->panel_info.mipi;
 
-	pr_debug("%s: ctrl=%p ndx=%d\n", __func__, ctrl, ctrl->ndx);
+	pr_debug("%s: ctrl=%pK ndx=%d\n", __func__, ctrl, ctrl->ndx);
 
 	caset[1] = (((pdata->panel_info.roi_x) & 0xFF00) >> 8);
 	caset[2] = (((pdata->panel_info.roi_x) & 0xFF));
@@ -585,10 +585,10 @@ static int mdss_dsi_panel_on(struct mdss_panel_data *pdata)
 	ctrl = container_of(pdata, struct mdss_dsi_ctrl_pdata,
 				panel_data);
 
-	pr_debug("%s: ctrl=%p ndx=%d\n", __func__, ctrl, ctrl->ndx);
+	pr_debug("%s: ctrl=%pK ndx=%d\n", __func__, ctrl, ctrl->ndx);
 
 	if (ctrl->on_cmds.cmd_cnt)
-	{	
+	{
 		mdss_dsi_panel_cmds_send(ctrl, &ctrl->on_cmds);
 
 			tmp = MIPI_INP((ctrl->ctrl_base) + 0xac);
@@ -632,7 +632,7 @@ static int mdss_dsi_panel_off(struct mdss_panel_data *pdata)
 		cancel_work_sync(&err_fg_work);
 	}
 #endif
-	pr_debug("%s: ctrl=%p ndx=%d\n", __func__, ctrl, ctrl->ndx);
+	pr_debug("%s: ctrl=%pK ndx=%d\n", __func__, ctrl, ctrl->ndx);
 	if (ctrl->off_cmds.cmd_cnt)
 		mdss_dsi_panel_cmds_send(ctrl, &ctrl->off_cmds);
 	mdelay(2);
@@ -836,8 +836,8 @@ static int mdss_panel_parse_dt_gpio(struct device_node *np,
 			if(rc)
 				pr_err("%s: tlmm config of lcd_on_gpio failed\n", __func__);
 		}
-				
-	
+
+
 	}
 	if( system_rev >= 5) {
 		msd.lcd_io_1p8_en_gpio = of_get_named_gpio(np,
@@ -981,7 +981,7 @@ static int mdss_panel_parse_dt(struct device_node *np,
 		pinfo->mipi.dst_format =
 			DSI_VIDEO_DST_FORMAT_RGB888;
 	}
-	
+
 	pdest = of_get_property(np,
 			"qcom,mdss-dsi-panel-destination", NULL);
 	if (strlen(pdest) != 9) {
@@ -1033,7 +1033,7 @@ static int mdss_panel_parse_dt(struct device_node *np,
 			rc = of_property_read_u32(np,
 				"qcom,mdss-dsi-bl-pmic-pwm-frequency", &tmp);
 			if (rc) {
-				pr_err("%s:%d, Error, panel pwm_period\n",		
+				pr_err("%s:%d, Error, panel pwm_period\n",
 					__func__, __LINE__);
 			return -EINVAL;
 			}
@@ -1056,7 +1056,7 @@ static int mdss_panel_parse_dt(struct device_node *np,
 
 	rc = of_property_read_u32(np, "qcom,mdss-brightness-max-level", &tmp);
 	pinfo->brightness_max = (!rc ? tmp : MDSS_MAX_BL_BRIGHTNESS);
-	
+
 	rc = of_property_read_u32(np, "qcom,mdss-dsi-bl-min-level", &tmp);
 	pinfo->bl_min = (!rc ? tmp : 0);
 	rc = of_property_read_u32(np, "qcom,mdss-dsi-bl-max-level", &tmp);
@@ -1065,7 +1065,7 @@ static int mdss_panel_parse_dt(struct device_node *np,
 
 	rc = of_property_read_u32(np, "qcom,mdss-dsi-interleave-mode", &tmp);
 	pinfo->mipi.interleave_mode = (!rc ? tmp : 0);
- 
+
 	pinfo->mipi.vsync_enable = of_property_read_bool(np,
 		"qcom,mdss-dsi-te-check-enable");
 	pinfo->mipi.hw_vsync_mode = of_property_read_bool(np,
@@ -1114,7 +1114,7 @@ static int mdss_panel_parse_dt(struct device_node *np,
 
 	rc = of_property_read_u32(np, "qcom,mdss-dsi-color-order", &tmp);
 	pinfo->mipi.rgb_swap = (!rc ? tmp : DSI_RGB_SWAP_RGB);
-	
+
 	rc = of_property_read_u32(np, "qcom,mdss-force-clk-lane-hs", &tmp);
 	pinfo->mipi.force_clk_lane_hs = (!rc ? tmp : 0);
 
@@ -1866,7 +1866,7 @@ int mdss_dsi_panel_init(struct device_node *node,
 			__func__, disp_esd_gpio, rc);
 	}
 
-	rc = request_threaded_irq(err_fg_gpio, NULL, err_fg_irq_handler, 
+	rc = request_threaded_irq(err_fg_gpio, NULL, err_fg_irq_handler,
 		IRQF_TRIGGER_HIGH | IRQF_ONESHOT, "esd_detect", NULL);
 	if (rc) {
 		pr_err("%s : Failed to request_irq. :ret=%d", __func__, rc);
